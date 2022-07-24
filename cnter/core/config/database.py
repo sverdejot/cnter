@@ -1,11 +1,12 @@
 from neo4j import GraphDatabase
 from dotenv import load_dotenv, find_dotenv
 import os
+import logging
 
 class Database:
     def __init__(self, uri, user, password):
         try:
-            self.driver = GraphDabatase(uri=uri, auth=(user, password))
+            self.driver = GraphDatabase.driver(uri=uri, auth=(user, password))
         except Exception as err:
             logging.error(f"[FATAL] Could not initialize database: \t {err}")
 
