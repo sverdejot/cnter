@@ -3,18 +3,18 @@ from pydantic import (
     Field,
     SecretStr,
     ValidationError,
-    validator
+    validator,
 )
 
 from uuid import UUID
-from typing import List
+from typing import List, Optional
 from uuid import uuid4
 from re import compile, match
 
 PSSWD_CONST_RGX = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$'
 
-class User(BaseModel):
-    id: UUID = ...
+class UserSchema(BaseModel):
+    id: Optional[UUID]
     username: str = ...
     password: SecretStr = Field(..., min_length=8)
 

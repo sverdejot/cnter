@@ -1,2 +1,3 @@
-from user import User
-from counter import Counter
+from .user import UserSchema
+from .counter import CounterSchema
+from .belongship import BelongshipSchema
