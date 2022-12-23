@@ -1,5 +1,7 @@
 from ...domain.repositories.CounterRepository import CounterRepository
 
+from ...domain.services import CounterService
+
 from ...domain.entities import Counter
 
 from ...domain.value_objects import (
@@ -17,4 +19,4 @@ class CounterKicker:
     def kick(self, ownerId: UserId, counterId: CounterId, memberId: UserId):
         counter = self.repo.search(counterId)
 
-        counter.kick(ownerId, memberId)
+        CounterService.kick(counter=counter, ownerId=ownerId, memberId=memberId)

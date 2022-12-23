@@ -17,6 +17,9 @@ class CounterCreator:
 
     def create(self, counterId: CounterId, ownerId: UserId, private: CounterPrivate) -> None:
         counter = Counter.create(
-            counterId=counterId, ownerId=ownerId, private=private)
+            counterId=counterId, 
+            ownerId=ownerId, 
+            private=private
+        )
 
         self.repo.add(counter)

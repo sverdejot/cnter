@@ -59,31 +59,13 @@ class Counter:
                        private=private,
                        members=CounterMembers([ownerId]))
 
-    def increment(self, memberId: UserId) -> None:
-        if memberId not in self.members:
-            return
-        # domain event increment
-        self.__increment()
-
-    def __increment(self) -> None:
+    def increment(self) -> None:
         self.__status = CounterStatus(self.status + 1)
-
-    def join(self, userId: UserId) -> None:
-        if userId in self.members or self.private:
-            return
-        self.__members.add(userId)
-
-    def kick(self, ownerId: UserId, memberId: UserId) -> None:
-        if self.ownerId != ownerId:
-            return
-        self.__remove_member(memberId)
     
-    def leave(self, memberId: UserId) -> None:
-        self.__remove_member(memberId)
+    def join(self, memberId: UserId) -> None:
+        self.__members.add(memberId)
 
-    def __remove_member(self, memberId: UserId) -> None:
-        if not memberId in self.members:
-            return
+    def leave(self, memberId: UserId) -> None:
         self.__members.remove(memberId)
         
     def __hash__(self):
