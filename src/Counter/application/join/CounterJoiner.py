@@ -1,5 +1,7 @@
 from ...domain.repositories.CounterRepository import CounterRepository
 
+from ...domain.services import CounterService
+
 from ...domain.value_objects import (
     CounterId,
     UserId
@@ -15,4 +17,4 @@ class CounterJoiner:
     def join(self, counterId: CounterId, userId: UserId) -> None:
         counter = self.repo.search(counterId)
 
-        counter.join(userId)
+        CounterService.join(counter=counter, userId=userId)

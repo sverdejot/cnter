@@ -1,5 +1,7 @@
 from ...domain.repositories.CounterRepository import CounterRepository
 
+from ...domain.services import CounterService
+
 from ...domain.entities import Counter
 
 from ...domain.value_objects import (
@@ -11,6 +13,7 @@ from ...domain.value_objects import (
 
 class CounterIncrementer:
     repo: CounterRepository
+    service: CounterService
 
     def __init__(self, repo: CounterRepository):
         self.repo = repo
@@ -18,4 +21,4 @@ class CounterIncrementer:
     def increment(self, counterId: CounterId, memberId: UserId) -> None:
         counter = self.repo.search(counterId)
 
-        counter.increment(memberId=memberId)
+        CounterService.increment(counter=counter, memberId=memberId)
