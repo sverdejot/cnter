@@ -5,7 +5,7 @@ from uuid import (
 
 from typing import Optional
 
-from src.Counter.domain.value_objects import UserId
+from src.contexts.Counter.domain.value_objects import UserId
 
 
 class UserIdStub:

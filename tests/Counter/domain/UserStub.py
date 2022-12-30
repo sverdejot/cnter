@@ -7,11 +7,11 @@ from typing import (
     Optional
 )
 
-from src.Counter.domain.entities import (
+from src.contexts.Counter.domain.entities import (
     User,
 )
 
-from src.Counter.domain.value_objects import (
+from src.contexts.Counter.domain.value_objects import (
     UserId
 )
 

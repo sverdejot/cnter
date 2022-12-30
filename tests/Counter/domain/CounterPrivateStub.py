@@ -2,7 +2,7 @@ from typing import Optional
 
 from random import choice
 
-from src.Counter.domain.value_objects import CounterPrivate
+from src.contexts.Counter.domain.value_objects import CounterPrivate
 
 
 class CounterPrivateStub:

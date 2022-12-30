@@ -5,7 +5,7 @@ from ..domain import (
 
 from ..infrastructure import FakeCounterRepository
 
-from src.Counter.application.join import CounterJoiner
+from src.contexts.Counter.application.join import CounterJoiner
 
 
 class TestCounterJoiner:

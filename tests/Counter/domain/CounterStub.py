@@ -10,12 +10,12 @@ from typing import (
     Optional
 )
 
-from src.Counter.domain.entities import (
+from src.contexts.Counter.domain.entities import (
     Counter,
     CounterMembers
 )
 
-from src.Counter.domain.value_objects import (
+from src.contexts.Counter.domain.value_objects import (
     CounterId,
     UserId,
     CounterStatus,
@@ -32,7 +32,7 @@ class CounterStub:
                members: List = []) -> Counter:
         counterId = CounterId(counterId or uuid4())
         ownerId = UserId(ownerId or uuid4())
-        status = CounterStatus(status)
+        status = CounterStatus(value=status)
         private = CounterPrivate(private or choice((True, False)))
         members = CounterMembers(members + [ownerId])
 
