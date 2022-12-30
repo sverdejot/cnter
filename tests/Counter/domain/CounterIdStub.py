@@ -3,7 +3,7 @@ from uuid import (
     uuid4
 )
 
-from src.Counter.domain.value_objects import CounterId
+from src.contexts.Counter.domain.value_objects import CounterId
 
 
 class CounterIdStub:

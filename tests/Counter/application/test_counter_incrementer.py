@@ -5,7 +5,7 @@ from ..domain import (
 
 from ..infrastructure import FakeCounterRepository
 
-from src.Counter.application.increment import CounterIncrementer
+from src.contexts.Counter.application.increment import CounterIncrementer
 
 
 class TestCounterIncrementer:

@@ -7,7 +7,7 @@ from ..domain import (
     CounterStub
 )
 
-from src.Counter.application.create import CounterCreator
+from src.contexts.Counter.application.create import CounterCreator
 
 from ..infrastructure import FakeCounterRepository
 

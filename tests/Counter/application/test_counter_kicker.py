@@ -5,7 +5,7 @@ from ..domain import (
 
 from ..infrastructure import FakeCounterRepository
 
-from src.Counter.application.kick import CounterKicker
+from src.contexts.Counter.application.kick import CounterKicker
 
 
 class TestCounterKicker:

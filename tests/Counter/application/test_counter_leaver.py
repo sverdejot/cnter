@@ -5,7 +5,7 @@ from ..domain import (
 
 from ..infrastructure import FakeCounterRepository
 
-from src.Counter.application.leave import CounterLeaver
+from src.contexts.Counter.application.leave import CounterLeaver
 
 
 class TestCounterLeaver:
