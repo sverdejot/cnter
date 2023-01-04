@@ -19,7 +19,7 @@ class TestCounterJoiner:
         joiner = CounterJoiner(repo=repo)
 
         # when
-        joiner.join(counterId=counter.counterId, userId=user.uid)
+        joiner(counterId=counter.counterId, userId=user.uid)
 
         # then
         assert user.uid in repo.find(counter.counterId).members

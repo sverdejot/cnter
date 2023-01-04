@@ -15,7 +15,7 @@ class CounterCreator:
     def __init__(self, repo: CounterRepository):
         self.repo = repo
 
-    def create(self, counterId: CounterId, ownerId: UserId, private: CounterPrivate) -> None:
+    def __call__(self, counterId: CounterId, ownerId: UserId, private: CounterPrivate) -> None:
         counter = Counter.create(
             counterId=counterId, 
             ownerId=ownerId, 

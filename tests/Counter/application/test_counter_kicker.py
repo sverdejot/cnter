@@ -21,7 +21,7 @@ class TestCounterKicker:
         kicker = CounterKicker(repo=repo)
 
         # when
-        kicker.kick(ownerId=owner.uid, counterId=counter.counterId,
+        kicker(ownerId=owner.uid, counterId=counter.counterId,
                     memberId=member.uid)
 
         # then
@@ -38,7 +38,7 @@ class TestCounterKicker:
         kicker = CounterKicker(repo=repo)
 
         # when
-        kicker.kick(ownerId=member.uid, counterId=counter.counterId,
+        kicker(ownerId=member.uid, counterId=counter.counterId,
                     memberId=another_member.uid)
 
         # then

@@ -17,7 +17,7 @@ class TestCounterIncrementer:
         incrementer = CounterIncrementer(repo=repo)
 
         # when
-        incrementer.increment(counterId=counter.counterId,
+        incrementer(counterId=counter.counterId,
                               memberId=counter.ownerId)
 
         # then
@@ -32,7 +32,7 @@ class TestCounterIncrementer:
         incrementer = CounterIncrementer(repo=repo)
 
         # when
-        incrementer.increment(counterId=counter.counterId, memberId=member.uid)
+        incrementer(counterId=counter.counterId, memberId=member.uid)
 
         # then
         assert repo.find(counter.counterId).status == 1

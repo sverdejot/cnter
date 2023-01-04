@@ -16,7 +16,7 @@ class CounterLeaver:
     def __init__(self, repo: CounterRepository):
         self.repo = repo
 
-    def leave(self, counterId: CounterId, memberId: UserId):
+    def __call__(self, counterId: CounterId, memberId: UserId):
         counter = self.repo.search(counterId)
 
         CounterService.leave(counter=counter, memberId=memberId)
