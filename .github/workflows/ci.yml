@@ -1,0 +1,15 @@
+name: Continous Integration
+
+on:
+  [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Test action
+        run: |
+          echo "Hello action world!"
