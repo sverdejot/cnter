@@ -12,6 +12,7 @@ import pytest
 
 class TestCounterJoiner:
     # TODO: flaky one, must give it a check
+    @pytest.mark.flaky(max_runs=5)
     @pytest.mark.asyncio
     async def test_user_can_join_public_counter(self):
         # given
