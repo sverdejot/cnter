@@ -3,8 +3,11 @@ from ..infrastructure import FakeCounterRepository
 
 from Counter.application.find import CounterFinder
 
+import pytest
+
 class TestCounterFinder:
-    def test_can_find_counter(self):
+    @pytest.mark.asyncio
+    async def test_can_find_counter(self):
         # given
         counter = CounterStub.random()
 
@@ -12,7 +15,7 @@ class TestCounterFinder:
         finder = CounterFinder(repo)
 
         # when
-        returned_counter = finder(counterId=counter.counterId)
+        returned_counter = await finder(counterId=counter.counterId)
 
         # then
         assert returned_counter == counter

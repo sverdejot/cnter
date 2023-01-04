@@ -16,7 +16,9 @@ class CounterKicker:
     def __init__(self, repo: CounterRepository):
         self.repo = repo
 
-    def __call__(self, ownerId: UserId, counterId: CounterId, memberId: UserId):
-        counter = self.repo.search(counterId)
+    async def __call__(self, ownerId: UserId, counterId: CounterId, memberId: UserId):
+        counter = await self.repo.search(counterId)
 
         CounterService.kick(counter=counter, ownerId=ownerId, memberId=memberId)
+
+        await self.repo.save(counter)

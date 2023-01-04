@@ -7,9 +7,12 @@ from ..infrastructure import FakeCounterRepository
 
 from src.contexts.Counter.application.increment import CounterIncrementer
 
+import pytest
+
 
 class TestCounterIncrementer:
-    def test_owner_can_increment(self):
+    @pytest.mark.asyncio
+    async def test_owner_can_increment(self):
         # given
         counter = CounterStub.random()
 
@@ -17,13 +20,15 @@ class TestCounterIncrementer:
         incrementer = CounterIncrementer(repo=repo)
 
         # when
-        incrementer(counterId=counter.counterId,
+        await incrementer(counterId=counter.counterId,
                               memberId=counter.ownerId)
 
         # then
-        assert repo.find(counter.counterId).status == 1
+        returned_counter = await repo.find(counter.counterId)
+        assert returned_counter.status == 1
 
-    def test_member_can_increment(self):
+    @pytest.mark.asyncio
+    async def test_member_can_increment(self):
         # given
         member = UserStub.random()
         counter = CounterStub.create(members=[member.uid])
@@ -32,7 +37,8 @@ class TestCounterIncrementer:
         incrementer = CounterIncrementer(repo=repo)
 
         # when
-        incrementer(counterId=counter.counterId, memberId=member.uid)
+        await incrementer(counterId=counter.counterId, memberId=member.uid)
 
         # then
-        assert repo.find(counter.counterId).status == 1
+        returned_counter = await repo.find(counter.counterId)
+        assert returned_counter.status == 1

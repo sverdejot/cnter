@@ -16,9 +16,6 @@ class Property(metaclass=ABCMeta):
 @dataclass(frozen=True)
 class UuidProperty(Property, metaclass=ABCMeta):
     value: UUID
-
-    def value(self):
-        return self.value
     
     def __str__(self):
         return str(self.value)
@@ -27,12 +24,6 @@ class UuidProperty(Property, metaclass=ABCMeta):
 class IntegerProperty(Property, metaclass=ABCMeta):
     value: int
 
-    def value(self):
-        return self.value
-
 @dataclass(frozen=True)
 class BooleanProperty(Property, metaclass=ABCMeta):
     value: bool
-
-    def value(self):
-        return self.value

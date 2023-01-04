@@ -20,3 +20,6 @@ class CounterRepository(Protocol):
 
     def search(self, counterId: CounterId) -> Optional[Counter]:
         ...
+    
+    def save(self, counter: Counter) -> None:
+        ...

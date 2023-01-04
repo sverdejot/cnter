@@ -7,10 +7,13 @@ from ..infrastructure import FakeCounterRepository
 
 from src.contexts.Counter.application.join import CounterJoiner
 
+import pytest
+
 
 class TestCounterJoiner:
     # TODO: flaky one, must give it a check
-    def test_user_can_join_public_counter(self):
+    @pytest.mark.asyncio
+    async def test_user_can_join_public_counter(self):
         # given
         counter = CounterStub.create(private=False)
         user = UserStub.random()
@@ -19,7 +22,8 @@ class TestCounterJoiner:
         joiner = CounterJoiner(repo=repo)
 
         # when
-        joiner(counterId=counter.counterId, userId=user.uid)
+        await joiner(counterId=counter.counterId, userId=user.uid)
 
         # then
-        assert user.uid in repo.find(counter.counterId).members
+        returned_counter = await repo.find(counter.counterId)
+        assert user.uid in returned_counter.members
