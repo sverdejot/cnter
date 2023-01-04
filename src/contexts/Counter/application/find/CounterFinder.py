@@ -10,5 +10,5 @@ class CounterFinder:
     def __init__(self, repo: CounterRepository):
         self.repo = repo
 
-    def __call__(self, counterId: CounterId) -> Counter:
-        return self.repo.find(counterId)
+    async def __call__(self, counterId: CounterId) -> Counter:
+        return await self.repo.find(counterId)

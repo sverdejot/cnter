@@ -6,13 +6,10 @@ from ...domain.value_objects import (
 
 
 class CounterService:
-    # i'll all of these as static method
-    # as by now i don't have any property for any service
-    
-    # the purpose of these service is orchestrate between domain model
-    # rather than orchestrate the use case (including interacting with repos)
     @staticmethod
     def increment(counter: Counter, memberId: UserId) -> None:
+        print({memberId})
+        print(counter.members.value)
         if memberId not in counter.members:
             return
         # domain event increment

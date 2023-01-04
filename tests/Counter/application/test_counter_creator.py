@@ -11,12 +11,13 @@ from src.contexts.Counter.application.create import CounterCreator
 
 from ..infrastructure import FakeCounterRepository
 
+import pytest
+
+
 
 class TestCounterCreator:
-    # it shouldn't create a counter for a non existing user
-    # so a validation of existing user must be implemented
-    # i'd give it a thought
-    def test_can_create_counter(self):
+    @pytest.mark.asyncio
+    async def test_can_create_counter(self):
         # given
         counter = CounterStub.random()
 
@@ -28,7 +29,7 @@ class TestCounterCreator:
         creator = CounterCreator(repo=repo)
 
         # when
-        creator(counterId=counterId, ownerId=ownerId, private=private)
+        await creator(counterId=counterId, ownerId=ownerId, private=private)
 
         # then
-        assert counter == repo.find(counterId)
+        assert counter == await repo.find(counterId)

@@ -17,14 +17,17 @@ class FakeCounterRepository:
     def __init__(self, counters: Optional[Set[Counter]] = set()):
         self.counters = counters
 
-    def add(self, counter: Counter) -> None:
+    async def add(self, counter: Counter) -> None:
         self.counters.add(counter)
 
-    def delete(self, counter: Counter) -> None:
+    async def delete(self, counter: Counter) -> None:
         self.counters.remove(counter)
 
-    def find(self, counterId: CounterId) -> Optional[Counter]:
+    async def find(self, counterId: CounterId) -> Optional[Counter]:
         return next((counter for counter in self.counters if counter.counterId == counterId), None)
 
-    def search(self, counterId: CounterId) -> Counter:
+    async def search(self, counterId: CounterId) -> Counter:
         return next(counter for counter in self.counters if counter.counterId == counterId)
+
+    async def save(self, counter: Counter) -> None:
+        pass

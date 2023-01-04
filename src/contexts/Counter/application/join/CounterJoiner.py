@@ -14,7 +14,11 @@ class CounterJoiner:
     def __init__(self, repo: CounterRepository):
         self.repo = repo
 
-    def __call__(self, counterId: CounterId, userId: UserId) -> None:
-        counter = self.repo.search(counterId)
+    async def __call__(self, counterId: CounterId, userId: UserId) -> None:
+        counter = await self.repo.find(counterId)
 
         CounterService.join(counter=counter, userId=userId)
+
+        print(counter.members.value)
+
+        await self.repo.save(counter)

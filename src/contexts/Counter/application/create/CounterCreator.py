@@ -8,6 +8,8 @@ from ...domain.value_objects import (
     CounterPrivate
 )
 
+from asyncio import Task
+
 
 class CounterCreator:
     repo: CounterRepository
@@ -15,11 +17,11 @@ class CounterCreator:
     def __init__(self, repo: CounterRepository):
         self.repo = repo
 
-    def __call__(self, counterId: CounterId, ownerId: UserId, private: CounterPrivate) -> None:
+    async def __call__(self, counterId: CounterId, ownerId: UserId, private: CounterPrivate) -> Task:
         counter = Counter.create(
             counterId=counterId, 
             ownerId=ownerId, 
             private=private
         )
 
-        self.repo.add(counter)
+        await self.repo.add(counter)
