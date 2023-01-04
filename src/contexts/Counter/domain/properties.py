@@ -19,6 +19,9 @@ class UuidProperty(Property, metaclass=ABCMeta):
 
     def value(self):
         return self.value
+    
+    def __str__(self):
+        return str(self.value)
 
 @dataclass(frozen=True)
 class IntegerProperty(Property, metaclass=ABCMeta):

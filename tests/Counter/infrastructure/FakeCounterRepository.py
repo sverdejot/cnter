@@ -11,10 +11,7 @@ from src.contexts.Counter.domain.value_objects import (
     CounterId
 )
 
-from src.contexts.Counter.domain.repositories import CounterRepository
-
-
-class FakeCounterRepository(CounterRepository):
+class FakeCounterRepository:
     counters: Set[Counter]
 
     def __init__(self, counters: Optional[Set[Counter]] = set()):

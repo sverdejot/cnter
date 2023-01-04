@@ -18,7 +18,7 @@ class CounterIncrementer:
     def __init__(self, repo: CounterRepository):
         self.repo = repo
 
-    def increment(self, counterId: CounterId, memberId: UserId) -> None:
+    def __call__(self, counterId: CounterId, memberId: UserId) -> None:
         counter = self.repo.search(counterId)
 
         CounterService.increment(counter=counter, memberId=memberId)

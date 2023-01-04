@@ -18,7 +18,7 @@ class TestCounterLeaver:
         leaver = CounterLeaver(repo=repo)
 
         # when
-        leaver.leave(counterId=counter.counterId, memberId=member.uid)
+        leaver(counterId=counter.counterId, memberId=member.uid)
 
         # then
         assert member.uid not in repo.search(counter.counterId).members

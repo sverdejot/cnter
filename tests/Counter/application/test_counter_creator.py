@@ -28,7 +28,7 @@ class TestCounterCreator:
         creator = CounterCreator(repo=repo)
 
         # when
-        creator.create(counterId=counterId, ownerId=ownerId, private=private)
+        creator(counterId=counterId, ownerId=ownerId, private=private)
 
         # then
         assert counter == repo.find(counterId)

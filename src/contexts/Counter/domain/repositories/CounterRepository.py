@@ -1,30 +1,22 @@
-from abc import (
-    ABCMeta,
-    abstractmethod,
-)
-
 from typing import (
-    Type,
-    List,
-    Optional
+    Optional,
+    Protocol
 )
 
 from ..entities import Counter
 
+from ..value_objects import CounterId
 
-class CounterRepository(metaclass=ABCMeta):
-    @abstractmethod
-    def add(self, counter) -> None:
-        raise NotImplementedError
 
-    @abstractmethod
-    def delete(self, counter) -> None:
-        raise NotImplementedError
+class CounterRepository(Protocol):
+    def add(self, counter: Counter) -> None:
+        ...
 
-    @abstractmethod
-    def find(self, counterId) -> Counter:
-        raise NotImplementedError
+    def delete(self, counter: Counter) -> None:
+        ...
 
-    @abstractmethod
-    def search(self, counterId) -> Optional[Counter]:
-        raise NotImplementedError
+    def find(self, counterId: CounterId) -> Counter:
+        ...
+
+    def search(self, counterId: CounterId) -> Optional[Counter]:
+        ...
