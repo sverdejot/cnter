@@ -7,6 +7,10 @@ from ..infrastructure import FakeCounterRepository
 
 from src.contexts.Counter.application.kick import CounterKicker
 
+from src.contexts.Counter.domain.exceptions import (
+    UnauthorizedException
+)
+
 import pytest
 
 
@@ -43,8 +47,9 @@ class TestCounterKicker:
         kicker = CounterKicker(repo=repo)
 
         # when
-        await kicker(ownerId=member.uid, counterId=counter.counterId,
-                    memberId=another_member.uid)
+        with pytest.raises(UnauthorizedException):
+            await kicker(ownerId=member.uid, counterId=counter.counterId,
+                        memberId=another_member.uid)
 
         # then
         returned_counter = await repo.find(counter.counterId)
