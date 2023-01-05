@@ -19,6 +19,4 @@ class CounterJoiner:
 
         CounterService.join(counter=counter, userId=userId)
 
-        print(counter.members.value)
-
         await self.repo.save(counter)

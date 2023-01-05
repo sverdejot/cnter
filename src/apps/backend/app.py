@@ -1,7 +1,8 @@
 from fastapi import (
     FastAPI,
     status,
-    Depends
+    Depends,
+    HTTPException
 )
 
 from pydantic import (
@@ -15,6 +16,13 @@ from Counter.application.create import CounterCreator
 from Counter.application.find import CounterFinder
 from Counter.application.join import CounterJoiner
 from Counter.application.increment import CounterIncrementer
+
+from Counter.domain.exceptions import (
+    NotFoundException,
+    UnauthorizedException, 
+    PrivateException,
+    AlreadyMemberException
+)
 
 from Counter.infrastructure.repositories.counter.MotorCounterRepository import MotorCounterRepository
 
@@ -89,6 +97,12 @@ async def get_counter(counterId: UUID, session: ClientSession = Depends(session_
 
     counter = await finder(CounterId(counterId))
 
+    if not counter:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"The counter with id [{counterId}] was not found in the system"
+        )
+
     return {
         'counterId': str(counter.counterId),
         'status': counter.status
@@ -105,10 +119,21 @@ async def create_counter(counterId: UUID, counter: CounterCreateRequestBody, ses
 @app.put('/counter/join/{counterId}', status_code=status.HTTP_201_CREATED)
 async def join_counter(counterId: UUID, member: CounterJoinRequestBody, session: ClientSession = Depends(session_maker)):
     repo = MotorCounterRepository(session)
-
+    
     joiner = CounterJoiner(repo)
+    try:
+        await joiner(CounterId(counterId), UserId(member.userId))
+    except AlreadyMemberException:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=f"The user with id [{member.userId}] is already a member"
+        )
+    except PrivateException:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=f"The specified counter is private. Ask the owner to invite you"
+        )
 
-    await joiner(CounterId(counterId), UserId(member.userId))
 
 @app.put('/counter/increment/{counterId}')
 async def increment_counter(counterId: UUID, increment: CounterIncrementRequestBody, session: ClientSession = Depends(session_maker)):
@@ -116,4 +141,11 @@ async def increment_counter(counterId: UUID, increment: CounterIncrementRequestB
 
     incrementer = CounterIncrementer(repo)
 
-    await incrementer(CounterId(counterId), UserId(increment.userId))
+    try:
+        await incrementer(CounterId(counterId), UserId(increment.userId))
+    except UnauthorizedException:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=f"You are not a member of counter [f{counterId}]. Try to join or ask the owner to invite you."
+        )
+
