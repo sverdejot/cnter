@@ -4,27 +4,30 @@ from ...domain.value_objects import (
     UserId
 )
 
+from ..exceptions import (
+    AlreadyMemberException,
+    UnauthorizedException,
+    PrivateException
+)
 
 class CounterService:
     @staticmethod
     def increment(counter: Counter, memberId: UserId) -> None:
-        print({memberId})
-        print(counter.members.value)
         if memberId not in counter.members:
-            return
+            raise UnauthorizedException
         # domain event increment
         counter.increment()
     
     @staticmethod
     def join(counter: Counter, userId: UserId) -> None:
-        if userId in counter.members or counter.private:
-            return
+        if member:=(userId in counter.members) or counter.private:
+            raise AlreadyMemberException if member else PrivateException
         counter.join(userId)
     
     @staticmethod
     def kick(counter: Counter, ownerId: UserId, memberId: UserId) -> None:
         if counter.ownerId != ownerId:
-            return
+            raise UnauthorizedException
         counter.leave(memberId)
 
     @staticmethod
