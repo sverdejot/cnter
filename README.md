@@ -8,7 +8,7 @@ Tech stack used (by this time):
 * `FastAPI`
 * `MongoDB` (with `Motor` for async I/O)
 * `pytest`
-* `behance`
+* `behave`
 * GH actions
 
 # Local deployment
