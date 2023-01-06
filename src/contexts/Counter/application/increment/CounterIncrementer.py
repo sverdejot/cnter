@@ -19,7 +19,7 @@ class CounterIncrementer:
         self.repo = repo
 
     async def __call__(self, counterId: CounterId, memberId: UserId) -> None:
-        counter = await self.repo.find(counterId)
+        counter = await self.repo.search(counterId)
 
         CounterService.increment(counter=counter, memberId=memberId)
 

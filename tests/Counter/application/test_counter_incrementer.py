@@ -3,7 +3,7 @@ from ..domain import (
     UserStub
 )
 
-from ..infrastructure import FakeCounterRepository
+from ..fakes import FakeCounterRepository
 
 from src.contexts.Counter.application.increment import CounterIncrementer
 
