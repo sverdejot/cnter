@@ -9,7 +9,7 @@ from ..domain import (
 
 from src.contexts.Counter.application.create import CounterCreator
 
-from ..infrastructure import FakeCounterRepository
+from ..fakes import FakeCounterRepository
 
 import pytest
 

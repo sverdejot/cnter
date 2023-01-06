@@ -3,12 +3,11 @@ from ..domain import (
     UserStub
 )
 
-from ..infrastructure import FakeCounterRepository
+from ..fakes import FakeCounterRepository
 
 from src.contexts.Counter.application.join import CounterJoiner
 
 import pytest
-
 
 class TestCounterJoiner:
     # TODO: flaky one, must give it a check

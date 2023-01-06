@@ -9,6 +9,8 @@ from ....domain.value_objects import (
     CounterStatus
 )
 
+from ....domain.exceptions import NotFoundException
+
 from uuid import UUID
 
 from motor.core import ClientSession
@@ -20,7 +22,7 @@ class MotorCounterRepository:
     async def add(self, counter: Counter) -> None:
         counters_collection = self.__session.client.counter.counters
         async with self.__session.start_transaction():
-            counters_collection.insert_one(document={
+            await counters_collection.insert_one(document={
                 'counterId': str(counter.counterId),
                 'ownerId': str(counter.ownerId),
                 'private': counter.private,
@@ -28,8 +30,12 @@ class MotorCounterRepository:
                 'members': [str(counter.ownerId)]
             })
 
-    def delete(self, counterId: CounterId) -> None:
-        pass
+    async def delete(self, counterId: CounterId) -> None:
+        counters_collection = self.__session.client.counter.counters
+        async with self.__session.start_transaction():
+            await counters_collection.delete_one(Key={
+                'counterId': str(counterId)
+            })
 
     async def find(self, counterId: CounterId) -> Counter | None:
         counters_collection = self.__session.client.counter.counters
@@ -37,12 +43,17 @@ class MotorCounterRepository:
             counter = await counters_collection.find_one({'counterId': str(counterId)})
 
             return Counter(
-                counterId=CounterId(counter['counterId']),
-                ownerId=UserId(counter['ownerId']),
+                counterId=CounterId(UUID(counter['counterId'])),
+                ownerId=UserId(UUID(counter['ownerId'])),
                 status=CounterStatus(counter['status']),
                 private=CounterPrivate(counter['private']),
                 members=CounterMembers([UserId(UUID(member)) for member in counter['members']])
             )
+
+    async def search(self, counterId: CounterId) -> Counter:
+        if not (counter:=await self.find(counterId)):
+            raise NotFoundException
+        return counter
 
     async def save(self, counter: Counter) -> None:
         counters_collection = self.__session.client.counter.counters

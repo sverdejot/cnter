@@ -11,4 +11,4 @@ class CounterFinder:
         self.repo = repo
 
     async def __call__(self, counterId: CounterId) -> Counter:
-        return await self.repo.find(counterId)
+        return await self.repo.search(counterId)

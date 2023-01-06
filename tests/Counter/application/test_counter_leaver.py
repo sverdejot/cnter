@@ -3,7 +3,7 @@ from ..domain import (
     CounterStub
 )
 
-from ..infrastructure import FakeCounterRepository
+from ..fakes import FakeCounterRepository
 
 from src.contexts.Counter.application.leave import CounterLeaver
 

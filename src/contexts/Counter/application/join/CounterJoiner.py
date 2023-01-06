@@ -15,7 +15,7 @@ class CounterJoiner:
         self.repo = repo
 
     async def __call__(self, counterId: CounterId, userId: UserId) -> None:
-        counter = await self.repo.find(counterId)
+        counter = await self.repo.search(counterId)
 
         CounterService.join(counter=counter, userId=userId)
 
