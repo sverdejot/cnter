@@ -25,3 +25,26 @@ jobs:
       - name: 1️⃣ Unit tests
         run: |
           poetry run pytest
+  acceptande:
+    needs: build
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: 🐍 Install Poetry
+        run: pipx install poetry
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: poetry
+
+      - name: ⏬ Install dependencies
+        run: poetry install
+
+      - name: 🛠️ Install modules
+        run: poetry run pip install -e src/contexts
+      - name: 🐳 Compose environment
+        run: docker compose up
+      - name: 🏃‍♂️ Run acceptance test
+        run: docker compose exec backend 'behave tests/apps/backend/app/features -D apiEndpoint=mongo -D apiPort=8000'
+    

@@ -1,17 +1,21 @@
 from behave import *
 
-@given('an user with id {userId}')
-def step_impl(context):
-    pass
+from httpx import request
+import json
 
-@given('a {private} counter with id {counterId}')
-def step_impl(context):
-    pass
+@given('i send a {method} request to \"{path}\" with body')
+def step_impl(context, method, path):
+    if not method == 'POST':
+        assert False
+    
+    req_body = json.loads(context.text)
 
-@when('the user tries to create the counter')
-def step_impl(context):
-    pass
+    context.response = request(
+        method='POST', 
+        url=f"{context.endpoint}{path}", 
+        json=req_body
+    )
 
-@then('the counter is createt as desired')
-def step_impl(context):
-    pass
+@then('the response status code should be {code}')
+def step_impl(context, code):
+    assert int(code) == context.response.status_code

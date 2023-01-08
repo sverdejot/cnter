@@ -17,8 +17,5 @@ services:
         MONGO_INITDB_ROOT_USERNAME: root
         MONGO_INITDB_ROOT_PASSWORD: example
     volumes:
-      - counter-mongo:/data/db
-
-volumes:
-  counter-mongo:
+      - ./tests/apps/init/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
 
