@@ -5,9 +5,11 @@ from typing import AsyncGenerator
 
 from config import settings
 
+from Counter.infrastructure.odm import uMongoODM
+
 class MotorConnection:
     def __init__(self, endpoint: str, username: str, password: str, port: int):
-        self.client = AsyncIOMotorClient(f"mongodb://{username}:{password}@{endpoint}", port)
+        self.client = AsyncIOMotorClient(f"mongodb://{username}:{password}@{endpoint}", port, uuidRepresentation='standard')
 
     async def __call__(self) -> AsyncGenerator[ClientSession, None]:
         async with await self.client.start_session() as session:
