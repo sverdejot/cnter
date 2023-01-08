@@ -30,6 +30,8 @@ from dependencies import (
     session_maker
 )
 
+from Counter.infrastructure.repositories.counter.uMongoCounterRepository import uMongoCounterRepository
+
 from .schemas.request.counters import (
     CounterCreateRequestBody,
     CounterIncrementRequestBody,
@@ -44,7 +46,7 @@ router = APIRouter(
 
 @router.get('/{counterId}', status_code=status.HTTP_200_OK)
 async def find_counter(counterId: UUID, session: ClientSession = Depends(session_maker)):
-    repo = MotorCounterRepository(session)
+    repo = uMongoCounterRepository()
 
     finder = CounterFinder(repo=repo)
 
@@ -63,7 +65,7 @@ async def find_counter(counterId: UUID, session: ClientSession = Depends(session
 
 @router.post('/{counterId}', status_code=status.HTTP_201_CREATED)
 async def create_counter(counterId: UUID, counter: CounterCreateRequestBody, session: ClientSession = Depends(session_maker)):
-    repo = MotorCounterRepository(session)
+    repo = uMongoCounterRepository()
 
     creator = CounterCreator(repo)
 
@@ -71,7 +73,7 @@ async def create_counter(counterId: UUID, counter: CounterCreateRequestBody, ses
 
 @router.put('/{counterId}/join', status_code=status.HTTP_201_CREATED)
 async def join_counter(counterId: UUID, member: CounterJoinRequestBody, session: ClientSession = Depends(session_maker)):
-    repo = MotorCounterRepository(session)
+    repo = uMongoCounterRepository()
     
     joiner = CounterJoiner(repo)
     try:
@@ -90,7 +92,7 @@ async def join_counter(counterId: UUID, member: CounterJoinRequestBody, session:
 
 @router.put('/{counterId}/increment', status_code=status.HTTP_200_OK)
 async def increment_counter(counterId: UUID, increment: CounterIncrementRequestBody, session: ClientSession = Depends(session_maker)):
-    repo = MotorCounterRepository(session)
+    repo = uMongoCounterRepository()
 
     incrementer = CounterIncrementer(repo)
 
@@ -104,7 +106,7 @@ async def increment_counter(counterId: UUID, increment: CounterIncrementRequestB
 
 @router.patch('/{counterId}/leave')
 async def leave_counter(counterId: UUID, leave: CounterLeaveRequestBody, session: ClientSession = Depends(session_maker)):
-    repo = MotorCounterRepository(session)
+    repo = uMongoCounterRepository()
     
     if not leave.ownerId:
         leaver = CounterLeaver(repo)
