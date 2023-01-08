@@ -18,19 +18,12 @@ from Counter.domain.exceptions import (
     PrivateException,
     AlreadyMemberException
 )
-from Counter.infrastructure.repositories.counter.MotorCounterRepository import MotorCounterRepository
 from Counter.domain.value_objects import (
     CounterId,
     UserId,
     CounterPrivate,
 )
-
-from dependencies import (
-    ClientSession,
-    session_maker
-)
-
-from Counter.infrastructure.repositories.counter.uMongoCounterRepository import uMongoCounterRepository
+from Counter.infrastructure.repositories.counter import uMongoCounterRepository
 
 from .schemas.request.counters import (
     CounterCreateRequestBody,
@@ -45,7 +38,7 @@ router = APIRouter(
 )
 
 @router.get('/{counterId}', status_code=status.HTTP_200_OK)
-async def find_counter(counterId: UUID, session: ClientSession = Depends(session_maker)):
+async def find_counter(counterId: UUID):
     repo = uMongoCounterRepository()
 
     finder = CounterFinder(repo=repo)
@@ -64,7 +57,7 @@ async def find_counter(counterId: UUID, session: ClientSession = Depends(session
     }
 
 @router.post('/{counterId}', status_code=status.HTTP_201_CREATED)
-async def create_counter(counterId: UUID, counter: CounterCreateRequestBody, session: ClientSession = Depends(session_maker)):
+async def create_counter(counterId: UUID, counter: CounterCreateRequestBody):
     repo = uMongoCounterRepository()
 
     creator = CounterCreator(repo)
@@ -72,7 +65,7 @@ async def create_counter(counterId: UUID, counter: CounterCreateRequestBody, ses
     await creator(counterId=CounterId(counterId), ownerId=UserId(counter.ownerId), private=CounterPrivate(counter.private))
 
 @router.put('/{counterId}/join', status_code=status.HTTP_201_CREATED)
-async def join_counter(counterId: UUID, member: CounterJoinRequestBody, session: ClientSession = Depends(session_maker)):
+async def join_counter(counterId: UUID, member: CounterJoinRequestBody):
     repo = uMongoCounterRepository()
     
     joiner = CounterJoiner(repo)
@@ -91,7 +84,7 @@ async def join_counter(counterId: UUID, member: CounterJoinRequestBody, session:
 
 
 @router.put('/{counterId}/increment', status_code=status.HTTP_200_OK)
-async def increment_counter(counterId: UUID, increment: CounterIncrementRequestBody, session: ClientSession = Depends(session_maker)):
+async def increment_counter(counterId: UUID, increment: CounterIncrementRequestBody):
     repo = uMongoCounterRepository()
 
     incrementer = CounterIncrementer(repo)
@@ -105,7 +98,7 @@ async def increment_counter(counterId: UUID, increment: CounterIncrementRequestB
         )
 
 @router.patch('/{counterId}/leave')
-async def leave_counter(counterId: UUID, leave: CounterLeaveRequestBody, session: ClientSession = Depends(session_maker)):
+async def leave_counter(counterId: UUID, leave: CounterLeaveRequestBody):
     repo = uMongoCounterRepository()
     
     if not leave.ownerId:

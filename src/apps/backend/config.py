@@ -5,6 +5,7 @@ class Settings(BaseSettings):
     mongo_username: str
     mongo_password: str
     mongo_port: int
+    mongo_db_name: str
 
     class Config:
         env_file = '.env'
