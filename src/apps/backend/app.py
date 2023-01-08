@@ -1,13 +1,13 @@
 from fastapi import FastAPI
-
-from routers import counters
+from bson.codec_options import CodecOptions
+from bson.binary import STANDARD
 
 from Counter.infrastructure.odm.uMongoODM import instance
 
-from bson.codec_options import CodecOptions
-from bson.binary import STANDARD, JAVA_LEGACY, PYTHON_LEGACY, CSHARP_LEGACY
+from routers import counters
+from dependencies import motor_client
+from config import settings
 
-from dependencies import session_maker
 
 app = FastAPI(
     title='🔢 cnter',
@@ -24,4 +24,4 @@ app.include_router(counters.router)
 
 @app.on_event('startup')
 async def initialize_umongo_instance():
-    instance.set_db(session_maker.client.get_database('counter', CodecOptions(uuid_representation=STANDARD)))
+    instance.set_db(motor_client.get_database(settings.mongo_db_name, CodecOptions(uuid_representation=STANDARD)))
