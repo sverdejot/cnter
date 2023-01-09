@@ -19,10 +19,8 @@ class uMongoCounterRepository:
             await counter_document.commit()
 
     async def find(self, counterId: CounterId) -> Counter | None:
-        c = await CounterDocument.find_one({'_id': counterId.value})
-        print(c)
-        return c.toModel()
-
+        return await CounterDocument.find_one({'_id': counterId.value}).toModel()
+        
     async def search(self, counterId: CounterId) -> Counter:
         if not (counter:=await CounterDocument.find_one({'_id': counterId.value})):
             raise NotFoundException
