@@ -32,6 +32,10 @@ from .schemas.request.counters import (
     CounterLeaveRequestBody,
 )
 
+from .schemas.response.counters import(
+    CounterFindReponseBody
+)
+
 router = APIRouter(
     prefix='/counter',
     tags=['counter']
@@ -43,18 +47,23 @@ async def find_counter(counterId: UUID):
 
     finder = CounterFinder(repo=repo)
 
-    counter = await finder(CounterId(counterId))
-
-    if not counter:
+    try:
+        counter = await finder(CounterId(counterId))
+    except NotFoundException:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"The counter with id [{counterId}] was not found in the system"
         )
 
-    return {
-        'counterId': str(counter.counterId),
-        'status': counter.status
-    }
+    return CounterFindReponseBody(
+        counterId=counter.counterId.value,
+        ownerId=counter.ownerId.value,
+        status=counter.status,
+        private=counter.private,
+        members=[
+            memberId.value for memberId in counter.members
+        ]
+    )
 
 @router.post('/{counterId}', status_code=status.HTTP_201_CREATED)
 async def create_counter(counterId: UUID, counter: CounterCreateRequestBody):
